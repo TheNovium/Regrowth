@@ -2,5 +2,6 @@
 .idea/
 gradle/
 src/test/
+build/
 
 *.psd
