@@ -1,4 +1,4 @@
-package space.novium.math.vector;
+package space.novium.util.math.vector;
 
 public class Vector2i {
     public int x, y;
