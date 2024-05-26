@@ -4,6 +4,7 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import space.novium.math.vector.Vector2f;
 import space.novium.math.vector.Vector2i;
+import space.novium.nebula.graphics.render.Renderer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -19,6 +20,7 @@ public class Window {
     private Vector2i windowSize;
     private Vector2f mousePos;
     private long window;
+    private Renderer renderer;
     
     private Window(){
         System.out.println("Creating a new window using GLFW...");
@@ -31,6 +33,8 @@ public class Window {
     
     private void render(double dt){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        renderer.render(dt);
         
         glfwSwapBuffers(window);
     }
@@ -95,6 +99,8 @@ public class Window {
         glEnable(GL_ALWAYS);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+        
+        renderer = Renderer.get();
     }
     
     private void run(){
