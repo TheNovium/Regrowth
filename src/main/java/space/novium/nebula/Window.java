@@ -2,8 +2,8 @@ package space.novium.nebula;
 
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
-import space.novium.math.vector.Vector2f;
-import space.novium.math.vector.Vector2i;
+import space.novium.util.math.vector.Vector2f;
+import space.novium.util.math.vector.Vector2i;
 import space.novium.nebula.graphics.render.Renderer;
 
 import static org.lwjgl.glfw.Callbacks.*;
