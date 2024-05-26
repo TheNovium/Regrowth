@@ -1,0 +1,6 @@
+.gradle/
+.idea/
+gradle/
+src/test/
+
+*.psd
