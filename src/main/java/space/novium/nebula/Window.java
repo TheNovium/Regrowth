@@ -2,6 +2,7 @@ package space.novium.nebula;
 
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import space.novium.nebula.graphics.render.shader.Shader;
 import space.novium.nebula.graphics.texture.Texture;
 import space.novium.util.ShaderUtils;
 import space.novium.util.math.vector.Vector2f;
@@ -103,6 +104,8 @@ public class Window {
                 ShaderUtils.dispose();
             }
         });
+    
+        Shader.loadShaders();
         
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);

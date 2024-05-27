@@ -5,8 +5,8 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL20.*;
 
-public class ShaderUtils {
-    private static List<Integer> shaders = new LinkedList<>();
+public final class ShaderUtils {
+    private final static List<Integer> shaders = new LinkedList<>();
     
     private ShaderUtils(){}
     
