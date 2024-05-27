@@ -100,7 +100,7 @@ public class Window {
             public void invoke(long window) {
                 Texture.dispose();
             }
-        })
+        });
         
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
