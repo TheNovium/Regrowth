@@ -3,6 +3,7 @@ package space.novium.nebula;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import space.novium.nebula.graphics.texture.Texture;
+import space.novium.util.ShaderUtils;
 import space.novium.util.math.vector.Vector2f;
 import space.novium.util.math.vector.Vector2i;
 import space.novium.nebula.graphics.render.Renderer;
@@ -99,6 +100,7 @@ public class Window {
             @Override
             public void invoke(long window) {
                 Texture.dispose();
+                ShaderUtils.dispose();
             }
         });
         
