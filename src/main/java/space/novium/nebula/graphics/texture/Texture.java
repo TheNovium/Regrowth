@@ -3,15 +3,20 @@ package space.novium.nebula.graphics.texture;
 import space.novium.util.buffer.BufferUtils;
 
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Texture {
     private int width, height;
-    private int texture;
+    private final int texture;
+    
+    private static List<Integer> allTextures = new LinkedList<>();
     
     public Texture(BufferedImage image){
         texture = processImage(image);
+        Texture.allTextures.add(texture);
     }
     
     private int processImage(BufferedImage image){
@@ -57,8 +62,10 @@ public class Texture {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
     
-    public void dispose(){
-        unbind();
-        glDeleteTextures(texture);
+    public static void dispose(){
+        glBindTexture(GL_TEXTURE_2D, 0);
+        for(Integer i : allTextures){
+            glDeleteTextures(i);
+        }
     }
 }
