@@ -1,7 +1,9 @@
 package space.novium.nebula.graphics.texture.font;
 
 
+import org.jetbrains.annotations.Nullable;
 import space.novium.util.IOUtils;
+import space.novium.util.math.vector.Vector4f;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -54,14 +56,12 @@ public class FontTexture {
         return textImage;
     }
     
-    private BufferedImage createCharImage(char c){
+    private @Nullable BufferedImage createCharImage(char c){
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
         g2d.setFont(font);
         FontMetrics metrics = g2d.getFontMetrics();
         g2d.dispose();
-        
-        
         
         int charWidth = metrics.charWidth(c);
         int charHeight = metrics.getHeight();
@@ -75,6 +75,16 @@ public class FontTexture {
         g2d.dispose();
         
         return img;
+    }
+    
+    public Vector4f getNormalizedCharLocation(char c){
+        if(glyphs.containsKey(c)){
+            Glyph g = glyphs.get(c);
+            float imageW = (float)textImage.getWidth();
+            float imageH = (float)textImage.getHeight();
+            return new Vector4f((float)g.x / imageW, (float)g.y / imageH, (float)g.width / imageW, (float)g.height / imageH);
+        }
+        return new Vector4f(0.0f);
     }
     
     public record Glyph(int x, int y, int width, int height){}
