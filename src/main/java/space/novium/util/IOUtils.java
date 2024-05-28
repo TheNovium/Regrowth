@@ -1,5 +1,6 @@
 package space.novium.util;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -27,6 +28,17 @@ public final class IOUtils {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+    
+    public static Font loadFont(String location){
+        try {
+            InputStream stream = getAsResourceStream(location, "resources/fonts", "ttf");
+            return Font.createFont(Font.TRUETYPE_FONT, stream);
+        } catch (Exception e){
+            System.err.println("Failed to load font at " + location);
+            e.printStackTrace();
+            return new Font("Monospace", Font.PLAIN, 48);
+        }
     }
     
     private static InputStream getAsResourceStream(String location) throws FileNotFoundException {
