@@ -1,4 +1,4 @@
-package space.novium.nebula.graphics.render.text;
+package space.novium.nebula.graphics.texture.atlas;
 
 import static org.lwjgl.opengl.GL13.*;
 
