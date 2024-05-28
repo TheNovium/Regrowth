@@ -1,6 +1,8 @@
 package space.novium.util;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -39,6 +41,19 @@ public final class IOUtils {
             e.printStackTrace();
             return new Font("Monospace", Font.PLAIN, 48);
         }
+    }
+    
+    public static Optional<BufferedImage> loadImage(String location){
+        try {
+            InputStream stream = getAsResourceStream(location, "textures", ".png");
+            BufferedImage img = ImageIO.read(stream);
+            stream.close();
+            return Optional.of(img);
+        } catch (Exception e){
+            System.err.println("Failed to load texture at " + location);
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
     
     private static InputStream getAsResourceStream(String location) throws FileNotFoundException {
