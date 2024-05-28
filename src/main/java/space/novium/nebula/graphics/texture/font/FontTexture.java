@@ -77,6 +77,10 @@ public class FontTexture {
         return img;
     }
     
+    public BufferedImage getTextImage(){
+        return textImage;
+    }
+    
     public Vector4f getNormalizedCharLocation(char c){
         if(glyphs.containsKey(c)){
             Glyph g = glyphs.get(c);
