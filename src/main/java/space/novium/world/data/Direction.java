@@ -2,7 +2,7 @@ package space.novium.world.data;
 
 import space.novium.impl.annotation.Stringable;
 
-@Stringable(defaultEntry = "SOUTH")
+@Stringable(value = "direction", defaultEntry = "SOUTH")
 public enum Direction {
     NORTH("North"),
     EAST("East"),

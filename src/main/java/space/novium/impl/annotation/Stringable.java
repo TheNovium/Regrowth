@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 public @interface Stringable {
     String defaultEntry();
+    String value();
     
     final class StringableAnnotationChecker {
         public static String getDefaultEntry(Class<? extends Enum<?>> enumClass){
