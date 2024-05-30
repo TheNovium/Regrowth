@@ -13,4 +13,8 @@ public class Vector4f {
     public Vector4f(float d){
         this(d, d, d, d);
     }
+    
+    public Vector4f(){
+        this(0, 0, 0, 0);
+    }
 }
