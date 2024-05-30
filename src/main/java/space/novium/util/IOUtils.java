@@ -15,7 +15,7 @@ public final class IOUtils {
     private static final String ROOT = System.getProperty("user.dir") + "/resources/";
     
     private IOUtils(){
-        System.out.println(ROOT);
+        System.out.println("Root folder located at " + ROOT);
     }
     
     public static Optional<String> loadAsString(ResourceLocation location){
