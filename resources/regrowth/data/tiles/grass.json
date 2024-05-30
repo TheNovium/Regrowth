@@ -1,5 +1,6 @@
 {
   "textures": {
-    "layer0": "grass"
-  }
+    "layer0": "tiles/grass"
+  },
+  "rotation": true
 }
