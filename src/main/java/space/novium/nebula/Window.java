@@ -2,6 +2,7 @@ package space.novium.nebula;
 
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import space.novium.impl.Game;
 import space.novium.nebula.graphics.render.shader.Shader;
 import space.novium.nebula.graphics.texture.Texture;
 import space.novium.util.ShaderUtils;
@@ -24,6 +25,7 @@ public class Window {
     private Vector2f mousePos;
     private long window;
     private Renderer renderer;
+    private Game game;
     
     private Window(){
         System.out.println("Creating a new window using GLFW...");
@@ -114,6 +116,7 @@ public class Window {
         glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
         
         renderer = Renderer.get();
+        game = Game.get();
     }
     
     private void run(){
