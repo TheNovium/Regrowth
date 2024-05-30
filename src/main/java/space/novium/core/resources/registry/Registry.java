@@ -2,8 +2,12 @@ package space.novium.core.resources.registry;
 
 import space.novium.core.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class Registry<T> {
@@ -19,15 +23,22 @@ public class Registry<T> {
         return ResourceKey.createRegistryKey(new ResourceLocation(key));
     }
     
-    private final Map<ResourceLocation, ResourceKey<?>> locations;
+    private final Map<ResourceLocation, ResourceKey<? extends T>> locations;
     private final ResourceKey<? extends Registry<T>> key;
     private final Map<ResourceKey<?>, Supplier<T>> keyMap;
+    private final Predicate<T> validator;
     
     public Registry(ResourceKey<Registry<T>> key){
+        this(key, null);
+    }
+    
+    public Registry(ResourceKey<Registry<T>> key, @Nullable Predicate<T> validator){
         this.locations = new HashMap<>();
         this.key = key;
         this.keyMap = new HashMap<>();
+        this.validator = validator;
         REGISTRIES.put(key.getLocation(), this);
+        
     }
     
     public ResourceKey<? extends Registry<T>> getKey(){
@@ -35,6 +46,9 @@ public class Registry<T> {
     }
     
     public <I extends T> RegistryObject<I> register(final String name, final Supplier<? extends I> supplier){
+        if(validator != null && !validator.test(supplier.get())){
+            throw new IllegalArgumentException(name + " is an invalid object for registry " + key.getRegistryName() + ". Please check documentation.");
+        }
         final ResourceLocation loc = new ResourceLocation(name);
         RegistryObject<I> ret;
         if(key != null){
@@ -53,16 +67,27 @@ public class Registry<T> {
         return locations.containsKey(location);
     }
     
-    public boolean containsKey(ResourceKey<T> contains){
+    public boolean containsKey(ResourceKey<?> contains){
         return keyMap.containsKey(contains);
     }
     
     public <I extends T> T getValue(ResourceLocation loc){
         if(containsKey(loc)){
-            Supplier<T> temp = keyMap.get(locations.get(loc));
-            if(temp == null) System.out.println("Failed to load from " + loc.toString());
+            return getValue(locations.get(loc));
+        }
+        return null;
+    }
+    
+    public <I extends T> T getValue(ResourceKey<?> resourceKey){
+        if(containsKey(resourceKey)){
+            Supplier<T> temp = keyMap.get(resourceKey);
+            if(temp == null) System.out.println("Failed to load from " + resourceKey.getLocation() + " in registry " + resourceKey.getRegistryName());
             return temp != null ? temp.get() : null;
         }
         return null;
+    }
+    
+    public Set<ResourceKey<?>> keySet(){
+        return keyMap.keySet();
     }
 }

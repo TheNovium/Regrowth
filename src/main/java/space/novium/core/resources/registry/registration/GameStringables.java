@@ -8,7 +8,5 @@ import static space.novium.core.resources.registry.Registries.STRINGABLE_REGISTR
 public class GameStringables {
     public static final RegistryObject<Enum<?>> DIRECTION = STRINGABLE_REGISTRY.register("direction", () -> Direction.SOUTH);
     
-    public static void init(){
-    
-    }
+    public static void init(){}
 }

@@ -18,8 +18,8 @@ public @interface Stringable {
             }
         }
         
-        public static Boolean implementsStringable(Class<? extends Enum<?>> enumClass){
-            return enumClass.getAnnotation(Stringable.class) != null;
+        public static <T extends Enum<?>> Boolean implementsStringable(T enumClass){
+            return enumClass.getClass().getAnnotation(Stringable.class) != null;
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 public class RegistryObject<T> implements Supplier<T> {
     private final ResourceLocation name;
     private final ResourceLocation register;
-    private ResourceKey<?> key;
+    private ResourceKey<T> key;
     private T value;
     
     private RegistryObject(final ResourceLocation name, final ResourceLocation register){
@@ -29,7 +29,7 @@ public class RegistryObject<T> implements Supplier<T> {
         Registry<?> registry = Registry.getRegistry(loc);
         if(registry == null) return;
         if(registry.containsKey(name)){
-            this.key = ResourceKey.create(registry.getKey(), name);
+            this.key = (ResourceKey<T>)ResourceKey.create(registry.getKey(), name);
             this.value = (T)registry.getValue(name);
         }
     }
@@ -38,7 +38,7 @@ public class RegistryObject<T> implements Supplier<T> {
         return new RegistryObject<>(name, registry.getLocation());
     }
     
-    public ResourceKey<?> getKey(){
+    public ResourceKey<T> getKey(){
         return key;
     }
     
