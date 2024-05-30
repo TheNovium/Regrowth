@@ -87,6 +87,10 @@ public class Registry<T> {
         return null;
     }
     
+    public Set<ResourceLocation> locationSet(){
+        return locations.keySet();
+    }
+    
     public Set<ResourceKey<?>> keySet(){
         return keyMap.keySet();
     }
