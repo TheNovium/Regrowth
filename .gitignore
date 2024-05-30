@@ -4,5 +4,6 @@ gradle/
 src/test/
 build/
 export/
+out/
 
 *.psd
