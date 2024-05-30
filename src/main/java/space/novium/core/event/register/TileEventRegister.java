@@ -25,7 +25,7 @@ public class TileEventRegister implements IEventRegister<Tile> {
         ResourceLocation loc = value.getKey().getLocation();
         Tile tile = value.get();
         tile.setRegistryName(loc);
-        ResourceLocation dataLoc = new ResourceLocation(loc.getNamespace(), "tile/" + loc.getPath());
+        ResourceLocation dataLoc = new ResourceLocation(loc.getNamespace(), "tiles/" + loc.getPath());
         return false;
     }
     
