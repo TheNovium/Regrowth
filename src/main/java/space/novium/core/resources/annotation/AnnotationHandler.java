@@ -29,18 +29,26 @@ public class AnnotationHandler {
         return instance;
     }
     
-    public void runEvent(EventType eventType, Object... args){
-        if(events.containsKey(eventType)){
-            events.get(eventType).forEach(method -> {
-                try {
-                    method.invoke(null, args);
-                } catch (IllegalAccessException | InvocationTargetException e){
-                    System.out.println("Failed to run event!");
-                    e.printStackTrace();
-                }
-            });
+    public static void runEvent(EventType eventType, Object... args){
+        if(loaded){
+            if(events.containsKey(eventType)){
+                events.get(eventType).forEach(method -> {
+                    try {
+                        if(method.getAnnotation(EventListener.class).args()){
+                            method.invoke(null, args);
+                        } else {
+                            method.invoke(null, (Object) null);
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException e){
+                        System.out.println("Failed to run event!");
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                System.err.println("No methods annotated with event!");
+            }
         } else {
-            System.err.println("No methods annotated with event!");
+            throw new IllegalStateException("Cannot run events without initializing the annotation handler!");
         }
     }
     
