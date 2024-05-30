@@ -20,8 +20,7 @@ public class StringableEventRegister implements IEventRegister<Enum<?>> {
     }
     
     @Override
-    public boolean register(RegistryObject<Enum<?>> value) {
-        return Stringable.StringableAnnotationChecker.implementsStringable(value.get());
+    public void register(RegistryObject<Enum<?>> value) {
     }
     
     @Override

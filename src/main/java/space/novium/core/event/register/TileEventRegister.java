@@ -6,7 +6,12 @@ import space.novium.core.resources.ResourceLocation;
 import space.novium.core.resources.annotation.AnnotationHandler;
 import space.novium.core.resources.registry.RegistryObject;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasHandler;
+import space.novium.util.IOUtils;
+import space.novium.util.ImageUtils;
+import space.novium.util.TextureUtils;
 import space.novium.world.tile.Tile;
+
+import java.awt.image.BufferedImage;
 
 public class TileEventRegister implements IEventRegister<Tile> {
     private TextureAtlasHandler.Builder builder;
@@ -21,12 +26,31 @@ public class TileEventRegister implements IEventRegister<Tile> {
     }
     
     @Override
-    public boolean register(RegistryObject<Tile> value) {
+    public void register(RegistryObject<Tile> value) {
         ResourceLocation loc = value.getKey().getLocation();
         Tile tile = value.get();
         tile.setRegistryName(loc);
         ResourceLocation dataLoc = new ResourceLocation(loc.getNamespace(), "tiles/" + loc.getPath());
-        return false;
+        IOUtils.loadJson(dataLoc).ifPresent((obj) -> {
+            if(obj.has("textures")){
+                JsonObject textures = obj.getAsJsonObject("textures");
+                int i = 0;
+                BufferedImage builtImage = null;
+                while(textures.has("layer" + i)){
+                    String imgLoc = textures.get("layer" + i).getAsString();
+                    BufferedImage img = IOUtils.loadImage(new ResourceLocation(loc.getNamespace(), imgLoc)).orElse(TextureUtils.NO_TEXTURE);
+                    if(builtImage == null){
+                        builtImage = img;
+                    } else {
+                        builtImage = ImageUtils.addImages(builtImage, img);
+                    }
+                    i++;
+                }
+                if(i > 1){
+                    IOUtils.saveImage(loc, builtImage);
+                }
+            }
+        });
     }
     
     @Override

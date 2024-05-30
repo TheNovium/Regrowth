@@ -6,7 +6,7 @@ import space.novium.core.resources.registry.RegistryObject;
 public interface IEventRegister<V> {
     void registerAll();
     
-    boolean register(RegistryObject<V> value);
+    void register(RegistryObject<V> value);
     
     EventType event();
 }
