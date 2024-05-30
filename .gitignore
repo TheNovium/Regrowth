@@ -3,5 +3,6 @@
 gradle/
 src/test/
 build/
+export/
 
 *.psd
