@@ -15,6 +15,10 @@ public class Registry<T> {
         return REGISTRIES.getOrDefault(loc, null);
     }
     
+    public static <T> ResourceKey<Registry<T>> createRegistryKey(String key){
+        return ResourceKey.createRegistryKey(new ResourceLocation(key));
+    }
+    
     private final Map<ResourceLocation, ResourceKey<?>> locations;
     private final ResourceKey<? extends Registry<T>> key;
     private final Map<ResourceKey<?>, Supplier<T>> keyMap;
