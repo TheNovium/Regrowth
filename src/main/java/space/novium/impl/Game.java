@@ -1,6 +1,7 @@
 package space.novium.impl;
 
 import space.novium.core.resources.annotation.AnnotationHandler;
+import space.novium.core.resources.registry.registration.GameStringables;
 
 public class Game {
     private static Game instance;
@@ -9,6 +10,8 @@ public class Game {
     
     private Game(){
         annotationHandler = AnnotationHandler.get();
+    
+        GameStringables.init();
     }
     
     public static Game get(){
