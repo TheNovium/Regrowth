@@ -34,7 +34,7 @@ public class Registry<T> {
         return key;
     }
     
-    public <I extends T> RegistryObject<I> register(final String name, final Supplier<I> supplier){
+    public <I extends T> RegistryObject<I> register(final String name, final Supplier<? extends I> supplier){
         final ResourceLocation loc = new ResourceLocation(name);
         RegistryObject<I> ret;
         if(key != null){
@@ -42,8 +42,8 @@ public class Registry<T> {
         } else {
             throw new IllegalStateException("Cannot process a registry without a key!");
         }
-        Supplier<T> val = keyMap.putIfAbsent(ret.getKey(), supplier::get);
-        if(val == null) throw new IllegalStateException("Unable to add duplicate registration " + name);
+        Supplier<? extends T> val = keyMap.putIfAbsent(ret.getKey(), supplier::get);
+        if(val != null) throw new IllegalStateException("Unable to add duplicate registration " + name);
         locations.put(ret.getKey().getLocation(), ret.getKey());
         ret.updateRegisterReference();
         return ret;
