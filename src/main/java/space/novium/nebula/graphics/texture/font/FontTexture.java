@@ -2,6 +2,7 @@ package space.novium.nebula.graphics.texture.font;
 
 
 import org.jetbrains.annotations.Nullable;
+import space.novium.core.resources.ResourceLocation;
 import space.novium.util.IOUtils;
 import space.novium.util.math.vector.Vector4f;
 
@@ -16,7 +17,7 @@ public class FontTexture {
     private final BufferedImage textImage;
     private final float size;
     
-    public FontTexture(String location, float size){
+    public FontTexture(ResourceLocation location, float size){
         this.size = size;
         this.font = IOUtils.loadFont(location).deriveFont(Font.PLAIN, size);
         this.glyphs = new HashMap<>(224);

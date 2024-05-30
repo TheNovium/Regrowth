@@ -1,5 +1,7 @@
 package space.novium.util;
 
+import space.novium.core.resources.ResourceLocation;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public final class ShaderUtils {
     
     private ShaderUtils(){}
     
-    public static int loadShaderProgram(String vertPath, String fragPath){
+    public static int loadShaderProgram(ResourceLocation vertPath, ResourceLocation fragPath){
         String vert = IOUtils.loadAsString(vertPath).orElseThrow(() -> new RuntimeException("Failed to load vertex shader file!"));
         String frag = IOUtils.loadAsString(fragPath).orElseThrow(() -> new RuntimeException("Failed to load fragment shader file!"));
         

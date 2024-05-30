@@ -1,6 +1,7 @@
 package space.novium.nebula.graphics.texture.atlas;
 
 import org.jetbrains.annotations.Nullable;
+import space.novium.core.resources.ResourceLocation;
 import space.novium.nebula.graphics.texture.Texture;
 import space.novium.util.IOUtils;
 import space.novium.util.TextureUtils;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class TextureAtlas {
     private final TextureAtlasType type;
-    private final Map<String, LocationInformation> spriteAtlasMap;
+    private final Map<ResourceLocation, LocationInformation> spriteAtlasMap;
     private Texture texture;
     
     private TextureAtlas(TextureAtlasType type){
@@ -22,11 +23,11 @@ public class TextureAtlas {
         this.spriteAtlasMap = new HashMap<>();
     }
     
-    private void setLocation(String location, LocationInformation info){
+    private void setLocation(ResourceLocation location, LocationInformation info){
         spriteAtlasMap.put(location, info);
     }
     
-    public LocationInformation getSpriteAtlasLocation(String loc){
+    public LocationInformation getSpriteAtlasLocation(ResourceLocation loc){
         return spriteAtlasMap.getOrDefault(loc, getMissingTextureLocation());
     }
     
@@ -34,7 +35,7 @@ public class TextureAtlas {
         return spriteAtlasMap.getOrDefault("no_texture", new LocationInformation(null, new Vector4i(0)));
     }
     
-    public boolean hasResource(String location){
+    public boolean hasResource(ResourceLocation location){
         return spriteAtlasMap.containsKey(location);
     }
     
@@ -51,7 +52,7 @@ public class TextureAtlas {
     }
     
     public static class Builder{
-        private Map<String, BufferedImage> images;
+        private Map<ResourceLocation, BufferedImage> images;
         private Vector2i largest;
         private TextureAtlas atlas;
         
@@ -59,15 +60,15 @@ public class TextureAtlas {
             this.images = new HashMap<>();
             this.largest = new Vector2i(0);
             this.atlas = new TextureAtlas(type);
-            addImage("no_texture", TextureUtils.NO_TEXTURE);
+            addImage(TextureUtils.NO_TEXTURE_LOCATION, TextureUtils.NO_TEXTURE);
         }
         
-        public Builder addImage(String loc){
+        public Builder addImage(ResourceLocation loc){
             IOUtils.loadImage(loc).ifPresent((img) -> addImage(loc, img));
             return this;
         }
         
-        public Builder addImage(String loc, BufferedImage img){
+        public Builder addImage(ResourceLocation loc, BufferedImage img){
             largest.x = Math.max(largest.x, img.getWidth());
             largest.y = Math.max(largest.y, img.getHeight());
             images.put(loc, img);
@@ -79,14 +80,14 @@ public class TextureAtlas {
             switch (atlas.getType()){
                 case TEXT -> {
                     int height = 0;
-                    for(String loc : images.keySet()){
+                    for(ResourceLocation loc : images.keySet()){
                         BufferedImage temp = images.get(loc);
                         height += temp.getHeight();
                     }
                     atlasImage = new BufferedImage(largest.x, height, BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g2d = atlasImage.createGraphics();
                     int y = 0;
-                    for(String loc : images.keySet()){
+                    for(ResourceLocation loc : images.keySet()){
                         BufferedImage temp = images.get(loc);
                         g2d.drawImage(temp, 0, y, null);
                         atlas.setLocation(loc, new LocationInformation(null, new Vector4i(0, y, temp.getWidth(), temp.getHeight())));
@@ -105,8 +106,8 @@ public class TextureAtlas {
                     int width = 0;
                     int height = 0;
                     int maxWidth = (int)(Math.max(largest.x, largest.y) * Math.ceil(Math.sqrt(images.size())));
-                    List<String> imagesByShelf = new ArrayList<>();
-                    for(String loc : images.keySet()) {
+                    List<ResourceLocation> imagesByShelf = new ArrayList<>();
+                    for(ResourceLocation loc : images.keySet()) {
                         BufferedImage temp = images.get(loc);
                         width = temp.getWidth();
                         if(x + width > maxWidth){
@@ -121,7 +122,7 @@ public class TextureAtlas {
                     }
                     atlasImage = new BufferedImage(maxWidth, y + height, BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g2d  = atlasImage.createGraphics();
-                    for(String loc : imagesByShelf){
+                    for(ResourceLocation loc : imagesByShelf){
                         Vector4i imgLoc = atlas.getSpriteAtlasLocation(loc).location;
                         g2d.drawImage(images.get(loc), imgLoc.x, imgLoc.y, null);
                     }

@@ -1,5 +1,7 @@
 package space.novium.util;
 
+import space.novium.core.resources.ResourceLocation;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,7 +18,7 @@ public final class IOUtils {
         System.out.println(ROOT);
     }
     
-    public static Optional<String> loadAsString(String location){
+    public static Optional<String> loadAsString(ResourceLocation location){
         StringBuilder result = new StringBuilder();
         try {
             InputStreamReader reader = new InputStreamReader(getAsResourceStream(location));
@@ -34,7 +36,7 @@ public final class IOUtils {
         return Optional.empty();
     }
     
-    public static Font loadFont(String location){
+    public static Font loadFont(ResourceLocation location){
         try {
             InputStream stream = getAsResourceStream(location, "resources/fonts", "ttf");
             return Font.createFont(Font.TRUETYPE_FONT, stream);
@@ -45,7 +47,7 @@ public final class IOUtils {
         }
     }
     
-    public static Optional<BufferedImage> loadImage(String location){
+    public static Optional<BufferedImage> loadImage(ResourceLocation location){
         try {
             InputStream stream = getAsResourceStream(location, "textures", ".png");
             BufferedImage img = ImageIO.read(stream);
@@ -58,15 +60,15 @@ public final class IOUtils {
         return Optional.empty();
     }
     
-    private static InputStream getAsResourceStream(String location) throws FileNotFoundException {
+    private static InputStream getAsResourceStream(ResourceLocation location) throws FileNotFoundException {
         return getAsResourceStream(location, "data");
     }
     
-    private static InputStream getAsResourceStream(String location, String subfolder) throws FileNotFoundException {
+    private static InputStream getAsResourceStream(ResourceLocation location, String subfolder) throws FileNotFoundException {
         return getAsResourceStream(location, subfolder, "");
     }
     
-    private static InputStream getAsResourceStream(String location, String subfolder, String filetype) throws FileNotFoundException {
-        return new FileInputStream(ROOT + subfolder + "/" + location + filetype);
+    private static InputStream getAsResourceStream(ResourceLocation location, String subfolder, String filetype) throws FileNotFoundException {
+        return new FileInputStream(ROOT + location.getNamespace() + "/" + subfolder + "/" + location.getPath() + filetype);
     }
 }

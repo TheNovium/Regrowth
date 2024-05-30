@@ -1,5 +1,6 @@
 package space.novium.nebula.graphics.render.shader;
 
+import space.novium.core.resources.ResourceLocation;
 import space.novium.util.ShaderUtils;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class Shader {
     private final int ID;
     private final Map<String, Integer> locationCache;
     
-    public Shader(String vertexPath, String fragmentPath){
+    public Shader(ResourceLocation vertexPath, ResourceLocation fragmentPath){
         ID = ShaderUtils.loadShaderProgram(vertexPath, fragmentPath);
         locationCache = new HashMap<>();
     }
@@ -44,7 +45,7 @@ public class Shader {
     public static void loadShaders(){
         if(!loaded){
             loaded = true;
-            Shader.DEFAULT = new Shader("shaders/default.vert","shaders/default.frag");
+            Shader.DEFAULT = new Shader(new ResourceLocation("shaders/default.vert"), new ResourceLocation("shaders/default.frag"));
         }
     }
 }

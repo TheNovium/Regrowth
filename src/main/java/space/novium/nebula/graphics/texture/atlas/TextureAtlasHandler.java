@@ -1,5 +1,7 @@
 package space.novium.nebula.graphics.texture.atlas;
 
+import space.novium.core.resources.ResourceLocation;
+
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,12 +24,12 @@ public class TextureAtlasHandler {
             builders = new HashMap<>(TextureAtlasType.values().length);
         }
         
-        public Builder loadTexture(String loc, TextureAtlasType type){
+        public Builder loadTexture(ResourceLocation loc, TextureAtlasType type){
             builders.computeIfAbsent(type, TextureAtlas.Builder::new).addImage(loc);
             return this;
         }
         
-        public Builder loadTexture(String loc, BufferedImage img, TextureAtlasType type){
+        public Builder loadTexture(ResourceLocation loc, BufferedImage img, TextureAtlasType type){
             builders.computeIfAbsent(type, TextureAtlas.Builder::new).addImage(loc, img);
             return this;
         }
