@@ -63,7 +63,6 @@ public class Window {
         window = glfwCreateWindow(windowSize.x, windowSize.y, "Init", NULL, NULL);
         
         glfwMakeContextCurrent(window);
-        glfwShowWindow(window);
         GL.createCapabilities();
         
         mousePos = new Vector2f();
@@ -117,6 +116,8 @@ public class Window {
         
         renderer = Renderer.get();
         game = Game.get();
+        
+        glfwShowWindow(window);
     }
     
     private void run(){
