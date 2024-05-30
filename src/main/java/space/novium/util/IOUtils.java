@@ -1,14 +1,14 @@
 package space.novium.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 import space.novium.core.resources.ResourceLocation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Optional;
 
 public final class IOUtils {
@@ -56,6 +56,29 @@ public final class IOUtils {
         } catch (Exception e){
             System.err.println("Failed to load texture at " + location);
             e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+    
+    public static void saveImage(ResourceLocation loc, BufferedImage img){
+        try {
+            File outputFile = new File(ROOT + loc.getNamespace() + "/export/" + loc.getPath() + ".png");
+            if(!outputFile.getParentFile().exists()){
+                outputFile.getParentFile().mkdirs();
+            }
+            ImageIO.write(img, "png", outputFile);
+        } catch (Exception e){
+            System.err.println("Failed to save image to " + loc);
+            e.printStackTrace();
+        }
+    }
+    
+    public static Optional<JsonObject> loadJson(ResourceLocation loc){
+        try {
+            JsonReader reader = new JsonReader(new InputStreamReader(getAsResourceStream(loc, "data", ".json")));
+            return Optional.of(new Gson().fromJson(reader, JsonObject.class));
+        } catch (Exception e){
+            System.err.println("Unable to load JSON object from " + loc);
         }
         return Optional.empty();
     }
