@@ -10,9 +10,11 @@ import java.io.InputStreamReader;
 import java.util.Optional;
 
 public final class IOUtils {
-    private static final String ROOT = "src/main/resources/";
+    private static final String ROOT = System.getProperty("user.dir") + "/resources/";
     
-    private IOUtils(){}
+    private IOUtils(){
+        System.out.println(ROOT);
+    }
     
     public static Optional<String> loadAsString(String location){
         StringBuilder result = new StringBuilder();

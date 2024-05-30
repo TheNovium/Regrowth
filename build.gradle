@@ -32,3 +32,33 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
 }
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    archiveName = "regrowth.jar"
+
+    manifest {
+        attributes 'Main-Class': "space.novium.Regrowth"
+    }
+
+    from {
+        configurations.runtimeClasspath.filter {
+            it.exists()
+        }.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+    copy {
+        from("resources")
+        into("$buildDir/resources")
+    }
+
+    copy {
+        from("run.bat")
+        into("$buildDir")
+    }
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}
