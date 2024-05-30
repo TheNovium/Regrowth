@@ -1,6 +1,7 @@
 package space.novium.impl;
 
 import space.novium.core.event.register.StringableEventRegister;
+import space.novium.core.event.register.TileEventRegister;
 import space.novium.core.resources.annotation.AnnotationHandler;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasHandler;
 
@@ -14,7 +15,7 @@ public class Game {
         annotationHandler = AnnotationHandler.get();
         TextureAtlasHandler.Builder atlasBuilder = new TextureAtlasHandler.Builder();
         
-        handleRegistration();
+        handleRegistration(atlasBuilder);
     }
     
     public static Game get(){
@@ -24,8 +25,9 @@ public class Game {
         return instance;
     }
     
-    private void handleRegistration(){
+    private void handleRegistration(TextureAtlasHandler.Builder builder){
         new StringableEventRegister().registerAll();
         
+        new TileEventRegister(builder).registerAll();
     }
 }
