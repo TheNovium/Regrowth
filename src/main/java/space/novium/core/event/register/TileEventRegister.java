@@ -15,7 +15,7 @@ import space.novium.world.tile.Tile;
 import java.awt.image.BufferedImage;
 
 public class TileEventRegister implements IEventRegister<Tile> {
-    private TextureAtlasHandler.Builder builder;
+    private final TextureAtlasHandler.Builder builder;
     
     public TileEventRegister(TextureAtlasHandler.Builder builder){
         this.builder = builder;
@@ -47,7 +47,12 @@ public class TileEventRegister implements IEventRegister<Tile> {
                     }
                     i++;
                 }
-                builder.loadTexture(loc, TextureAtlasType.TILES, builtImage);
+                if(i > 0){
+                    builder.loadTexture(loc, TextureAtlasType.TILES, builtImage);
+                    System.out.println("Loaded tile " + loc);
+                } else {
+                    System.err.println("Invalid file provided at " + loc);
+                }
             }
         });
     }
