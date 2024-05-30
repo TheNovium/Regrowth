@@ -6,6 +6,7 @@ import space.novium.core.resources.ResourceLocation;
 import space.novium.core.resources.annotation.AnnotationHandler;
 import space.novium.core.resources.registry.RegistryObject;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasHandler;
+import space.novium.nebula.graphics.texture.atlas.TextureAtlasType;
 import space.novium.util.IOUtils;
 import space.novium.util.ImageUtils;
 import space.novium.util.TextureUtils;
@@ -46,9 +47,7 @@ public class TileEventRegister implements IEventRegister<Tile> {
                     }
                     i++;
                 }
-                if(i > 1){
-                    IOUtils.saveImage(loc, builtImage);
-                }
+                builder.loadTexture(loc, TextureAtlasType.TILES, builtImage);
             }
         });
     }

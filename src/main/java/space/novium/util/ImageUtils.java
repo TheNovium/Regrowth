@@ -3,8 +3,6 @@ package space.novium.util;
 import java.awt.image.*;
 
 public final class ImageUtils {
-    
-    
     public static BufferedImage addImages(BufferedImage dst, BufferedImage src){
         int width = Math.min(dst.getWidth(), src.getWidth());
         int height = Math.min(dst.getHeight(), src.getHeight());

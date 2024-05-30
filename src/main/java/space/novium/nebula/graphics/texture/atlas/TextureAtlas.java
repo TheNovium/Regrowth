@@ -130,6 +130,7 @@ public class TextureAtlas {
                 }
             }
             atlas.setTexture(new Texture(atlasImage));
+            IOUtils.saveImage(new ResourceLocation(atlas.getType().name()), atlasImage);
             return atlas;
         }
     }

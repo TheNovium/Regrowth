@@ -29,7 +29,7 @@ public class TextureAtlasHandler {
             return this;
         }
         
-        public Builder loadTexture(ResourceLocation loc, BufferedImage img, TextureAtlasType type){
+        public Builder loadTexture(ResourceLocation loc, TextureAtlasType type, BufferedImage img){
             builders.computeIfAbsent(type, TextureAtlas.Builder::new).addImage(loc, img);
             return this;
         }

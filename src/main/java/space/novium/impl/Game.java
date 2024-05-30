@@ -16,6 +16,8 @@ public class Game {
         TextureAtlasHandler.Builder atlasBuilder = new TextureAtlasHandler.Builder();
         
         handleRegistration(atlasBuilder);
+        
+        textureAtlasHandler = atlasBuilder.build();
     }
     
     public static Game get(){
