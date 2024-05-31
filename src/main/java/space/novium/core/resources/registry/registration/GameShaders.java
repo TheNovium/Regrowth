@@ -9,8 +9,11 @@ import space.novium.nebula.graphics.render.shader.Shader;
 import static space.novium.core.resources.registry.Registries.SHADER_REGISTRY;
 
 public class GameShaders {
-    public static final RegistryObject<Shader> DEFAULT = SHADER_REGISTRY.register("default", () -> new Shader(new ResourceLocation("shaders/default.vert"), new ResourceLocation("shaders/default.frag")));
+    private static final Shader DEFAULT_SHADER = new Shader(new ResourceLocation("shaders/default.vert"), new ResourceLocation("shaders/default.frag"));
+    
+    public static final RegistryObject<Shader> DEFAULT = SHADER_REGISTRY.register("default", () -> DEFAULT_SHADER);
     
     @EventListener(event = EventType.SHADER_REGISTRATION)
     public static void init(){}
+    
 }
