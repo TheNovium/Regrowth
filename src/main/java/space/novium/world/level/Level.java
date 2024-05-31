@@ -16,7 +16,7 @@ public class Level {
     public Level(){
         tiles = new ArrayList<>();
         //TODO change this to load from a file eventually, for now just
-        
+        generateLevel();
     }
     
     private void generateLevel(){}
