@@ -2,6 +2,7 @@ package space.novium.nebula.graphics.render.shader;
 
 import space.novium.core.resources.ResourceLocation;
 import space.novium.util.ShaderUtils;
+import space.novium.util.math.Matrix4f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,14 @@ public class Shader {
             locationCache.put(name, result);
         }
         return result;
+    }
+    
+    public void setUniformIntArr(String name, int[] arr){
+        glUniform1iv(getUniform(name), arr);
+    }
+    
+    public void setUniformMat4(String name, Matrix4f mat4){
+        glUniformMatrix4fv(getUniform(name), false, mat4.toFloatBuffer());
     }
     
     public int shaderID(){
