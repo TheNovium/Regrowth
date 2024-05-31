@@ -1,6 +1,7 @@
 package space.novium.nebula.graphics.render.component;
 
 import space.novium.core.resources.ResourceLocation;
+import space.novium.nebula.graphics.texture.atlas.SpriteAtlas;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasType;
 import space.novium.util.math.vector.Vector4f;
 
@@ -10,12 +11,18 @@ public class RenderObject {
     private Vector4f color;
     private Vector4f drawLocation;
     private boolean dirty = true;
+    private SpriteAtlas atlas;
     
     public RenderObject(TextureAtlasType textureAtlasType, ResourceLocation textureLocation){
         this.textureAtlasType = textureAtlasType;
         this.textureLocation = textureLocation;
         this.color = new Vector4f(1.0f, 1.0f, 1.0f, 1.0f);
         this.drawLocation = new Vector4f(1.0f);
+    }
+    
+    public RenderObject withSpriteAtlas(SpriteAtlas atlas){
+        this.atlas = atlas;
+        return this;
     }
     
     public void setDrawLocation(Vector4f draw){
