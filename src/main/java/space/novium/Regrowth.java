@@ -9,5 +9,6 @@ public class Regrowth {
     
     public static void main(String[] args) {
         window = Window.get();
+        window.start();
     }
 }

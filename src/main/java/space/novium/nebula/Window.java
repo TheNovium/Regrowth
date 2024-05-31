@@ -10,6 +10,8 @@ import space.novium.util.math.vector.Vector2f;
 import space.novium.util.math.vector.Vector2i;
 import space.novium.nebula.graphics.render.Renderer;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -29,7 +31,6 @@ public class Window {
     
     private Window(){
         System.out.println("Creating a new window using GLFW...");
-        start();
     }
     
     private void update(double dt){
@@ -44,7 +45,7 @@ public class Window {
         glfwSwapBuffers(window);
     }
     
-    private void start(){
+    public void start(){
         init();
         
         run();
@@ -134,6 +135,10 @@ public class Window {
         glfwDestroyWindow(window);
         glfwTerminate();
         System.exit(0);
+    }
+    
+    public void setWindowTitle(CharSequence chars){
+        glfwSetWindowTitle(window, chars);
     }
     
     public static Window get(){
