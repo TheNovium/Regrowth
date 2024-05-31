@@ -9,10 +9,6 @@ import java.util.Map;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
-    private static boolean loaded = false;
-    
-    public static Shader DEFAULT;
-    
     private final int ID;
     private final Map<String, Integer> locationCache;
     
@@ -42,10 +38,7 @@ public class Shader {
         return result;
     }
     
-    public static void loadShaders(){
-        if(!loaded){
-            loaded = true;
-            Shader.DEFAULT = new Shader(new ResourceLocation("shaders/default.vert"), new ResourceLocation("shaders/default.frag"));
-        }
+    public int shaderID(){
+        return ID;
     }
 }

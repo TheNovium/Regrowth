@@ -1,5 +1,6 @@
 package space.novium.impl;
 
+import space.novium.core.event.register.ShaderEventRegister;
 import space.novium.core.event.register.StringableEventRegister;
 import space.novium.core.event.register.TileEventRegister;
 import space.novium.core.resources.annotation.AnnotationHandler;
@@ -35,6 +36,8 @@ public class Game {
     
     private void handleRegistration(TextureAtlasHandler.Builder builder){
         window.setWindowTitle("Completing Registration");
+        new ShaderEventRegister().registerAll();
+        
         new StringableEventRegister().registerAll();
         
         new TileEventRegister(builder).registerAll();
