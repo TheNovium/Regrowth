@@ -5,7 +5,6 @@ import space.novium.core.resources.ResourceLocation;
 import space.novium.core.resources.annotation.AnnotationHandler;
 import space.novium.core.resources.registry.Registries;
 import space.novium.core.resources.registry.RegistryObject;
-import space.novium.impl.annotation.Stringable;
 
 import java.util.Set;
 
