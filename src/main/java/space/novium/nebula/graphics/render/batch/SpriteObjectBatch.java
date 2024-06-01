@@ -141,12 +141,6 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
             loadVertexProperties(numObjects);
             numObjects++;
         }
-        for(int i = 0; i < vertices.length; i++){
-            if(i % VERTEX_SIZE == 0){
-                System.out.println("\b");
-            }
-            System.out.print(vertices[i] + ", ");
-        }
     }
     
     private void loadVertexProperties(int index){
