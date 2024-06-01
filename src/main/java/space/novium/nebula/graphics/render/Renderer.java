@@ -42,7 +42,7 @@ public class Renderer {
         }
         
         if(!added){
-            SpriteObjectBatch batch = new SpriteObjectBatch(1, batches.size());
+            SpriteObjectBatch batch = new SpriteObjectBatch(MAX_BATCH_SIZE, batches.size());
             batch.start();
             batch.addRenderObject(obj);
             batches.add(batch);

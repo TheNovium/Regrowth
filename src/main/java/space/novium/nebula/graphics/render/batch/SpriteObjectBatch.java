@@ -3,6 +3,7 @@ package space.novium.nebula.graphics.render.batch;
 import space.novium.core.resources.registry.registration.GameShaders;
 import space.novium.nebula.graphics.Camera;
 import space.novium.nebula.graphics.render.Renderer;
+import space.novium.nebula.graphics.render.Transform;
 import space.novium.nebula.graphics.render.component.RenderObject;
 import space.novium.nebula.graphics.render.shader.Shader;
 import space.novium.util.TextureUtils;
@@ -145,6 +146,7 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
     
     private void loadVertexProperties(int index){
         RenderObject obj = renderObjects[index];
+        Transform transform = obj.getTransform();
         int offset = index * 4 * VERTEX_SIZE;
         Vector4f color = obj.getColor();
         float[] texCoords = TextureUtils.getTextureDraw(obj.getDrawLocation());
@@ -158,10 +160,8 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
             } else if(i == 3){
                 yAdd = 0.0f;
             }
-            Vector2f pos = new Vector2f(0.0f, 0.0f);
-            Vector2f scale = new Vector2f(1.0f, 1.0f);
-            vertices[offset] = pos.x + (scale.x * xAdd);
-            vertices[offset + 1] = pos.y + (scale.y * yAdd);
+            vertices[offset] = transform.getX() + (transform.getW() * xAdd);
+            vertices[offset + 1] = transform.getY() + (transform.getH() * yAdd);
             vertices[offset + 2] = zDraw;
             
             vertices[offset + 3] = color.x;
@@ -172,7 +172,7 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
             vertices[offset + 7] = texCoords[i * 2];
             vertices[offset + 8] = texCoords[(i * 2) + 1];
             
-            vertices[offset + 9] = 0.0f;
+            vertices[offset + 9] = transform.getRotation();
             
             vertices[offset + 10] = obj.getTextureAtlasType().getId();
             
