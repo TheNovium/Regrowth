@@ -62,6 +62,10 @@ public class Renderer {
         }
     }
     
+    public Camera getCamera() {
+        return camera;
+    }
+    
     public static Renderer get(){
         if(Renderer.instance == null){
             Renderer.instance = new Renderer();

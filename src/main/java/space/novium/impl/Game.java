@@ -5,8 +5,10 @@ import space.novium.core.event.register.StringableEventRegister;
 import space.novium.core.event.register.TileEventRegister;
 import space.novium.core.resources.annotation.AnnotationHandler;
 import space.novium.nebula.Window;
+import space.novium.nebula.graphics.Camera;
 import space.novium.nebula.graphics.render.Renderer;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasHandler;
+import space.novium.util.math.vector.Vector2f;
 import space.novium.world.level.Level;
 import space.novium.world.level.update.LevelUpdateListener;
 
@@ -43,6 +45,11 @@ public class Game {
     
     public void render(double dt){
         renderer.render(dt);
+    }
+    
+    public void onResize(float ratio){
+        Camera camera = renderer.getCamera();
+        camera.snapZoom(ratio * 12.0f, 12.0f);
     }
     
     public void handleUpdate(LevelUpdateListener<?> l){

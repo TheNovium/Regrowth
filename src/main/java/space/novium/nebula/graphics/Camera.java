@@ -56,6 +56,13 @@ public class Camera {
         updateProjectionMatrix();
     }
     
+    public void snapZoom(float x, float y){
+        zoomX = Math.max(x, 0.1f);
+        zoomY = Math.max(y, 0.1f);
+        
+        updateProjectionMatrix();
+    }
+    
     public void smoothZoomBy(float dx, float dy, float duration){
         targetZoomX += dx;
         targetZoomY += dy;
