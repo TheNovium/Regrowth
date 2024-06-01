@@ -29,6 +29,7 @@ public class Game {
         
         window.setWindowTitle("Building Texture Atlas");
         textureAtlasHandler = atlasBuilder.build();
+        renderer.bindTextures(textureAtlasHandler);
         
         level = new Level();
         level.addUpdateListener(this::handleUpdate);

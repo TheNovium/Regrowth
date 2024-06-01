@@ -99,7 +99,7 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
         glBindVertexArray(vao);
         
         vbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, (long)vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
         
         ebo = glGenBuffers();
@@ -133,6 +133,20 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
         glDeleteVertexArrays(vao);
         glDeleteBuffers(vbo);
         glDeleteBuffers(ebo);
+    }
+    
+    public void addRenderObject(RenderObject o){
+        if(hasRoom(o)){
+            renderObjects[numObjects] = o;
+            loadVertexProperties(numObjects);
+            numObjects++;
+        }
+        for(int i = 0; i < vertices.length; i++){
+            if(i % VERTEX_SIZE == 0){
+                System.out.println("\b");
+            }
+            System.out.print(vertices[i] + ", ");
+        }
     }
     
     private void loadVertexProperties(int index){
