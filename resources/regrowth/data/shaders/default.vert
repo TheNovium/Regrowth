@@ -13,6 +13,7 @@ out DATA {
     vec4 color;
     vec3 pos;
     float id;
+    float rotation;
 } fs_out;
 
 void main() {
