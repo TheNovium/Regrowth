@@ -3,14 +3,11 @@ package space.novium.nebula;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import space.novium.impl.Game;
-import space.novium.nebula.graphics.render.shader.Shader;
 import space.novium.nebula.graphics.texture.Texture;
 import space.novium.util.ShaderUtils;
 import space.novium.util.math.vector.Vector2f;
 import space.novium.util.math.vector.Vector2i;
 import space.novium.nebula.graphics.render.Renderer;
-
-import java.util.concurrent.CompletableFuture;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -26,7 +23,6 @@ public class Window {
     private Vector2i windowSize;
     private Vector2f mousePos;
     private long window;
-    private Renderer renderer;
     private Game game;
     
     private Window(){
@@ -35,13 +31,14 @@ public class Window {
     
     private void update(double dt){
         glfwPollEvents();
+        game.update(dt);
     }
     
     private void render(double dt){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        renderer.render(dt);
-        
+        game.render(dt);
+    
         glfwSwapBuffers(window);
     }
     
@@ -113,7 +110,6 @@ public class Window {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
         
-        renderer = Renderer.get();
         game = Game.get();
         
         glfwShowWindow(window);

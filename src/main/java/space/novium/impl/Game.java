@@ -5,7 +5,10 @@ import space.novium.core.event.register.StringableEventRegister;
 import space.novium.core.event.register.TileEventRegister;
 import space.novium.core.resources.annotation.AnnotationHandler;
 import space.novium.nebula.Window;
+import space.novium.nebula.graphics.render.Renderer;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasHandler;
+import space.novium.world.level.Level;
+import space.novium.world.level.update.LevelUpdateListener;
 
 public class Game {
     private static Game instance;
@@ -13,18 +16,36 @@ public class Game {
     private AnnotationHandler annotationHandler;
     private TextureAtlasHandler textureAtlasHandler;
     private Window window;
+    private Renderer renderer;
+    private Level level;
     
     private Game(){
         annotationHandler = AnnotationHandler.get();
         TextureAtlasHandler.Builder atlasBuilder = new TextureAtlasHandler.Builder();
         window = Window.get();
+        renderer = Renderer.get();
         
         handleRegistration(atlasBuilder);
         
         window.setWindowTitle("Building Texture Atlas");
         textureAtlasHandler = atlasBuilder.build();
         
+        level = new Level();
+        level.addUpdateListener(this::handleUpdate);
+        
         window.setWindowTitle("Regrowth");
+    }
+    
+    public void update(double dt){
+        level.tick();
+    }
+    
+    public void render(double dt){
+        renderer.render(dt);
+    }
+    
+    public void handleUpdate(LevelUpdateListener<?> l){
+        l.handleRender(renderer, textureAtlasHandler);
     }
     
     public static Game get(){
