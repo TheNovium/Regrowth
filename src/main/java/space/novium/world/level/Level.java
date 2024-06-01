@@ -1,6 +1,7 @@
 package space.novium.world.level;
 
 import space.novium.core.resources.registry.registration.GameTiles;
+import space.novium.impl.Game;
 import space.novium.nebula.graphics.Camera;
 import space.novium.nebula.graphics.render.Renderer;
 import space.novium.world.entity.Player;
@@ -49,6 +50,12 @@ public class Level {
     }
     
     private void generateLevel(){
-        addTile(GameTiles.GRASS.get());
+        for(int x = 0; x < 10; x++){
+            for(int y = 0; y < 10; y++){
+                Tile t = GameTiles.GRASS.get().clone();
+                t.setPos(x, y);
+                addTile(t);
+            }
+        }
     }
 }

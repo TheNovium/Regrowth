@@ -59,7 +59,7 @@ public class Tile {
     }
     
     public Tile clone(){
-        Tile ret = new Tile(getPos());
+        Tile ret = new Tile(getPos().copy());
         ret.setRegistryName(getRegistryName());
         return ret;
     }
