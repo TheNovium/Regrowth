@@ -8,7 +8,6 @@ import space.novium.nebula.Window;
 import space.novium.nebula.graphics.Camera;
 import space.novium.nebula.graphics.render.Renderer;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasHandler;
-import space.novium.util.math.vector.Vector2f;
 import space.novium.world.level.Level;
 import space.novium.world.level.update.LevelUpdateListener;
 
@@ -20,6 +19,8 @@ public class Game {
     private Window window;
     private Renderer renderer;
     private Level level;
+    private double timeSinceLastTick;
+    private double secondsPerTick;
     
     private Game(){
         annotationHandler = AnnotationHandler.get();
@@ -36,11 +37,18 @@ public class Game {
         level = new Level();
         level.addUpdateListener(this::handleUpdate);
         
+        timeSinceLastTick = 0.0;
+        secondsPerTick = 0.05;
+        
         window.setWindowTitle("Regrowth");
     }
     
     public void update(double dt){
-        level.tick();
+        timeSinceLastTick += dt;
+        while(timeSinceLastTick > secondsPerTick){
+            level.tick();
+            timeSinceLastTick -= secondsPerTick;
+        }
     }
     
     public void render(double dt){
