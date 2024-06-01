@@ -26,8 +26,6 @@ public class Level {
         levelListeners = new LinkedList<>();
         updates = new Stack<>();
         
-        addUpdateListener(Renderer.get()::processLevelUpdate);
-        
         //TODO change this to load from a file eventually, for now just
         generateLevel();
     }

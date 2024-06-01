@@ -72,6 +72,4 @@ public class Renderer {
         }
         return Renderer.instance;
     }
-    
-    public void processLevelUpdate(LevelUpdateListener listener){}
 }
