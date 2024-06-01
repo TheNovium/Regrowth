@@ -15,7 +15,7 @@ public class TileUpdate extends LevelUpdateListener<Tile> {
     
     @Override
     public void handleRender(Renderer renderer, TextureAtlasHandler handler) {
-        RenderObject obj = handler.getRendererForResourceLocation(tile.getTileType(), TextureAtlasType.TILES);
+        RenderObject obj = handler.getRendererForResourceLocation(tile.getRegistryName(), TextureAtlasType.TILES);
         renderer.add(obj);
     }
     
