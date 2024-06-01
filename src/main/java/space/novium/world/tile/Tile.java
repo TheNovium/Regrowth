@@ -10,8 +10,7 @@ import java.util.Random;
 
 public class Tile {
     private final TilePos pos;
-    private ResourceLocation tileType;
-    private String registryName;
+    private ResourceLocation registryName;
     
     public Tile(){
         this(TilePos.ORIGIN.copy());
@@ -33,29 +32,21 @@ public class Tile {
         pos.setPosition(x, y, z);
     }
     
-    public ResourceLocation getTileType() {
-        return tileType;
-    }
-    
     public boolean ticks(){
         return false;
     }
     
     public void tick(Level level, Player player, Random random){}
     
-    public String getRegistryName() {
+    public ResourceLocation getRegistryName() {
         return registryName;
     }
     
     public void setRegistryName(ResourceLocation loc){
-        setRegistryName(loc.toString());
-    }
-    
-    public void setRegistryName(String registryName) {
         if(getRegistryName() != null){
             System.err.println("Unable to set registry name to " + registryName + " because tile is already registered as " + getRegistryName());
         } else {
-            this.registryName = registryName;
+            this.registryName = loc;
         }
     }
     
@@ -68,7 +59,7 @@ public class Tile {
     }
     
     public Tile clone(){
-        Tile ret = new Tile(getPos());
+        Tile ret = new Tile(getPos().copy());
         ret.setRegistryName(getRegistryName());
         return ret;
     }
@@ -81,7 +72,7 @@ public class Tile {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Tile tile){
-            return tile.getPos().compareTo(getPos()) == 0 && tile.getTileType().equals(getTileType());
+            return tile.getPos().compareTo(getPos()) == 0 && tile.getRegistryName().equals(getRegistryName());
         }
         return false;
     }

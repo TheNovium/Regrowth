@@ -37,9 +37,13 @@ public class Matrix4f {
     }
     
     public Matrix4f translate(Vector3f vec){
-        elements[12] += vec.x;
-        elements[13] += vec.y;
-        elements[14] += vec.z;
+        return translate(vec.x, vec.y, vec.z);
+    }
+    
+    public Matrix4f translate(float x, float y, float z){
+        elements[12] += x;
+        elements[13] += y;
+        elements[14] += z;
         return this;
     }
     

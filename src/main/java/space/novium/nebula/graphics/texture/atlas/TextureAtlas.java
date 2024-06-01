@@ -6,6 +6,7 @@ import space.novium.nebula.graphics.texture.Texture;
 import space.novium.util.IOUtils;
 import space.novium.util.TextureUtils;
 import space.novium.util.math.vector.Vector2i;
+import space.novium.util.math.vector.Vector4f;
 import space.novium.util.math.vector.Vector4i;
 
 import java.awt.*;
@@ -49,6 +50,20 @@ public class TextureAtlas {
     
     private void setTexture(Texture texture){
         this.texture = texture;
+    }
+    
+    public Vector4i getImageLocation(ResourceLocation loc){
+        return spriteAtlasMap.getOrDefault(loc, getMissingTextureLocation()).location();
+    }
+    
+    public Vector4f getRelativeImageLocation(ResourceLocation loc){
+        Vector4i standard = getImageLocation(loc);
+        Vector4f result = new Vector4f();
+        result.x = ((float)standard.x / (float)texture.getWidth());
+        result.y = ((float)standard.y / (float)texture.getHeight());
+        result.w = ((float)standard.w / (float)texture.getWidth());
+        result.h = ((float)standard.h / (float)texture.getHeight());
+        return result;
     }
     
     public static class Builder{
@@ -135,5 +150,5 @@ public class TextureAtlas {
         }
     }
     
-    private record LocationInformation(@Nullable SpriteAtlas spriteAtlas, Vector4i location){}
+    protected record LocationInformation(@Nullable SpriteAtlas spriteAtlas, Vector4i location){}
 }

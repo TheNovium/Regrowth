@@ -1,5 +1,7 @@
 package space.novium.nebula.graphics.render.batch;
 
+import space.novium.nebula.graphics.Camera;
+
 public abstract class RenderBatch<T> implements Comparable<RenderBatch<T>> {
     protected int maxBatchSize;
     protected int zIndex;
@@ -9,7 +11,7 @@ public abstract class RenderBatch<T> implements Comparable<RenderBatch<T>> {
         this.zIndex = zIndex;
     }
     
-    public abstract void render();
+    public abstract void render(Camera camera);
     
     public abstract void start();
     

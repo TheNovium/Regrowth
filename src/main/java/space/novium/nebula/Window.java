@@ -3,14 +3,10 @@ package space.novium.nebula;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import space.novium.impl.Game;
-import space.novium.nebula.graphics.render.shader.Shader;
 import space.novium.nebula.graphics.texture.Texture;
 import space.novium.util.ShaderUtils;
 import space.novium.util.math.vector.Vector2f;
 import space.novium.util.math.vector.Vector2i;
-import space.novium.nebula.graphics.render.Renderer;
-
-import java.util.concurrent.CompletableFuture;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -26,8 +22,11 @@ public class Window {
     private Vector2i windowSize;
     private Vector2f mousePos;
     private long window;
-    private Renderer renderer;
     private Game game;
+    
+    private static final float GOAL_RATIO = 4.0f / 3.0f;
+    private static final float MAX_RATIO = 2.0f;
+    private static final float MIN_RATIO = 1.0f;
     
     private Window(){
         System.out.println("Creating a new window using GLFW...");
@@ -35,13 +34,14 @@ public class Window {
     
     private void update(double dt){
         glfwPollEvents();
+        game.update(dt);
     }
     
     private void render(double dt){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        renderer.render(dt);
-        
+        game.render(dt);
+    
         glfwSwapBuffers(window);
     }
     
@@ -75,6 +75,7 @@ public class Window {
             }
         });
         
+        
         //TODO mouse button callback
         glfwSetMouseButtonCallback(window, new GLFWMouseButtonCallback() {
             @Override
@@ -95,7 +96,26 @@ public class Window {
         glfwSetFramebufferSizeCallback(window, new GLFWFramebufferSizeCallback() {
             @Override
             public void invoke(long window, int width, int height) {
-        
+                float currentRatio = (float) width / height;
+                
+                if(currentRatio > MAX_RATIO){
+                    glfwSetWindowSize(window, (int)(height * MAX_RATIO), height);
+                } else if (currentRatio < MIN_RATIO){
+                    glfwSetWindowSize(window, width, (int)(width * MIN_RATIO));
+                } else {
+                    int viewportWidth = width;
+                    int viewportHeight = height;
+                    
+                    if(currentRatio > currentRatio){
+                        viewportWidth = (int)(height * currentRatio);
+                    } else {
+                        viewportHeight = (int)(width / currentRatio);
+                    }
+                    glViewport((width - viewportWidth) / 2, (height - viewportHeight) / 2, viewportWidth, viewportHeight);
+                    windowSize.x = width;
+                    windowSize.y = height;
+                    game.onResize((float) viewportWidth / viewportHeight);
+                }
             }
         });
         
@@ -113,8 +133,8 @@ public class Window {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
         
-        renderer = Renderer.get();
         game = Game.get();
+        game.onResize((float) windowSize.x / windowSize.y);
         
         glfwShowWindow(window);
     }

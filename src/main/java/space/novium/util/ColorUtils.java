@@ -6,7 +6,6 @@ public final class ColorUtils {
     public static int layerNormal(int dst, int src){
         float transparency = getAlpha(src) / 255.0f;
         Color color = new Color(src, true);
-        System.out.println(getAlpha(src));
         float calc = 1.0f - transparency;
         return toColor((int)(getRed(src) * transparency + getRed(dst) * calc), (int)(getGreen(src) * transparency + getGreen(dst) * calc), (int)(getBlue(src) * transparency + getBlue(dst) * calc), (int)(getAlpha(src) * transparency + getAlpha(dst) * calc));
     }
