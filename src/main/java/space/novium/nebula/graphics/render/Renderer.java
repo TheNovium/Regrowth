@@ -6,7 +6,6 @@ import space.novium.nebula.graphics.render.batch.SpriteObjectBatch;
 import space.novium.nebula.graphics.render.component.RenderObject;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasHandler;
 import space.novium.nebula.graphics.texture.atlas.TextureAtlasType;
-import space.novium.world.level.update.LevelUpdateListener;
 
 import java.util.ArrayList;
 import java.util.List;

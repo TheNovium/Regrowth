@@ -38,7 +38,10 @@ public class RenderObject {
     }
     
     public Vector4f getDrawLocation(){
-        return drawLocation;
+        if(atlas == null){
+            return drawLocation;
+        }
+        return atlas.getCurrentDrawLocation(drawLocation);
     }
     
     public TextureAtlasType getTextureAtlasType(){

@@ -17,4 +17,8 @@ public class Vector4f {
     public Vector4f(){
         this(0, 0, 0, 0);
     }
+    
+    public Vector4f copy(){
+        return new Vector4f(x, y, w, h);
+    }
 }
