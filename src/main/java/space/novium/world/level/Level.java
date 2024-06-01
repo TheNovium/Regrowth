@@ -55,6 +55,9 @@ public class Level {
                 Tile t = GameTiles.GRASS.get().clone();
                 t.setPos(x, y);
                 addTile(t);
+                Tile s = GameTiles.SAND.get().clone();
+                s.setPos(x - 10, y);
+                addTile(s);
             }
         }
     }

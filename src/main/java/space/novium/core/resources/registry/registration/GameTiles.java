@@ -10,9 +10,11 @@ import static space.novium.core.resources.registry.Registries.TILE_REGISTRY;
 
 public class GameTiles {
     public static final RegistryObject<Tile> GRASS = TILE_REGISTRY.register("grass", Tile::new);
+    public static final RegistryObject<Tile> SAND = TILE_REGISTRY.register("sand", Tile::new);
     
     @EventListener(event = EventType.TILE_REGISTRATION)
     public static void init(IEventRegister<Tile> tileRegister){
         tileRegister.register(GRASS);
+        tileRegister.register(SAND);
     }
 }
