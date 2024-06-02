@@ -1,5 +1,6 @@
 package space.novium.nebula.graphics.texture.atlas;
 
+import com.google.gson.JsonObject;
 import org.jetbrains.annotations.Nullable;
 import space.novium.core.resources.ResourceLocation;
 import space.novium.nebula.graphics.texture.Texture;
@@ -68,11 +69,13 @@ public class TextureAtlas {
     
     public static class Builder{
         private Map<ResourceLocation, BufferedImage> images;
+        private Map<ResourceLocation, JsonObject> data;
         private Vector2i largest;
         private TextureAtlas atlas;
         
         public Builder(TextureAtlasType type){
             this.images = new HashMap<>();
+            this.data = new HashMap<>();
             this.largest = new Vector2i(0);
             this.atlas = new TextureAtlas(type);
             addImage(TextureUtils.NO_TEXTURE_LOCATION, TextureUtils.NO_TEXTURE);
@@ -87,6 +90,14 @@ public class TextureAtlas {
             largest.x = Math.max(largest.x, img.getWidth());
             largest.y = Math.max(largest.y, img.getHeight());
             images.put(loc, img);
+            return this;
+        }
+        
+        public Builder addImageWithData(ResourceLocation loc, BufferedImage img, JsonObject obj){
+            largest.x = Math.max(largest.x, img.getWidth());
+            largest.y = Math.max(largest.y, img.getHeight());
+            images.put(loc, img);
+            data.put(loc, obj);
             return this;
         }
         
@@ -131,7 +142,7 @@ public class TextureAtlas {
                             height = 0;
                         }
                         height = Math.max(height, temp.getHeight());
-                        atlas.setLocation(loc, new LocationInformation(new SpriteAtlas(loc), new Vector4i(x, y, width, temp.getHeight())));
+                        atlas.setLocation(loc, new LocationInformation(data.containsKey(loc) ? new SpriteAtlas(data.get(loc)) : null, new Vector4i(x, y, width, temp.getHeight())));
                         x += width;
                         imagesByShelf.add(loc);
                     }

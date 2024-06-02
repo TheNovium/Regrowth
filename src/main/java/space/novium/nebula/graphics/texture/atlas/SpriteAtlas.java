@@ -11,12 +11,10 @@ import java.util.Random;
 public class SpriteAtlas {
     private boolean rotation = false;
     
-    public SpriteAtlas(ResourceLocation location){
-        /*IOUtils.loadJson(location).ifPresent((data) -> {
-            if(data.has("rotation")){
-                rotation = data.get("rotation").getAsBoolean();
-            }
-        });*/
+    public SpriteAtlas(JsonObject data){
+        if(data.has("rotation")){
+            rotation = data.get("rotation").getAsBoolean();
+        }
     }
     
     public Vector4f getCurrentDrawLocation(Vector4f totalLocation){

@@ -48,7 +48,11 @@ public class TileEventRegister implements IEventRegister<Tile> {
                     i++;
                 }
                 if(i > 0){
-                    builder.loadTexture(loc, TextureAtlasType.TILES, builtImage);
+                    if(obj.has("data")){
+                        builder.loadTexture(loc, TextureAtlasType.TILES, builtImage, obj.getAsJsonObject("data"));
+                    } else {
+                        builder.loadTexture(loc, TextureAtlasType.TILES, builtImage);
+                    }
                     System.out.println("Loaded tile " + loc);
                 } else {
                     System.err.println("Invalid file provided at " + loc);
