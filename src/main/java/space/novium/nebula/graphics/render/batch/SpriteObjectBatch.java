@@ -23,16 +23,16 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
     private static final int POSITION_SIZE = 3;
     private static final int COLOR_SIZE = 4;
     private static final int TEXTURE_COORDINATES_SIZE = 2;
-    private static final int ROTATION_SIZE = 1;
     private static final int ID_SIZE = 1;
-    private static final int VERTEX_SIZE = POSITION_SIZE + COLOR_SIZE + TEXTURE_COORDINATES_SIZE + ROTATION_SIZE + ID_SIZE;
+    private static final int VERTEX_SIZE = POSITION_SIZE + COLOR_SIZE + TEXTURE_COORDINATES_SIZE + ID_SIZE;
     
     private static final int POSITION_OFFSET = 0;
     private static final int COLOR_OFFSET = POSITION_OFFSET + POSITION_SIZE * Float.BYTES;
     private static final int TEXTURE_COORDINATES_OFFSET = COLOR_OFFSET + COLOR_SIZE * Float.BYTES;
-    private static final int ROTATION_OFFSET = TEXTURE_COORDINATES_OFFSET + TEXTURE_COORDINATES_SIZE * Float.BYTES;
-    private static final int ID_OFFSET = ROTATION_OFFSET + ROTATION_SIZE * Float.BYTES;
+    private static final int ID_OFFSET = TEXTURE_COORDINATES_OFFSET + TEXTURE_COORDINATES_SIZE * Float.BYTES;
     private static final int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
+    
+    private static final float DISPLAY_OFFSET = 0.001f;
     
     private RenderObject[] renderObjects;
     private int numObjects;
@@ -80,7 +80,6 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
         glEnableVertexAttribArray(3);
-        glEnableVertexAttribArray(4);
         
         glDrawElements(GL_TRIANGLES, numObjects * 6, GL_UNSIGNED_INT, 0);
         
@@ -88,7 +87,6 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);
         glDisableVertexAttribArray(3);
-        glDisableVertexAttribArray(4);
         glBindVertexArray(0);
         
         shader.disable();
@@ -117,11 +115,8 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
         glVertexAttribPointer(2, TEXTURE_COORDINATES_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, TEXTURE_COORDINATES_OFFSET);
         glEnableVertexAttribArray(2);
         
-        glVertexAttribPointer(3, ROTATION_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, ROTATION_OFFSET);
+        glVertexAttribPointer(3, ID_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, ID_OFFSET);
         glEnableVertexAttribArray(3);
-        
-        glVertexAttribPointer(4, ID_SIZE, GL_FLOAT, false, VERTEX_SIZE_BYTES, ID_OFFSET);
-        glEnableVertexAttribArray(4);
     }
     
     @Override
@@ -160,8 +155,8 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
             } else if(i == 3){
                 yAdd = 0.0f;
             }
-            vertices[offset] = transform.getX() + (transform.getW() * xAdd);
-            vertices[offset + 1] = transform.getY() + (transform.getH() * yAdd);
+            vertices[offset] = transform.getX() + (transform.getW() * xAdd) + (DISPLAY_OFFSET * (xAdd - 0.5f));
+            vertices[offset + 1] = transform.getY() + (transform.getH() * yAdd) + (DISPLAY_OFFSET * (yAdd - 0.5f));
             vertices[offset + 2] = zDraw;
             
             vertices[offset + 3] = color.x;
@@ -172,9 +167,7 @@ public class SpriteObjectBatch extends RenderBatch<RenderObject> {
             vertices[offset + 7] = texCoords[i * 2];
             vertices[offset + 8] = texCoords[(i * 2) + 1];
             
-            vertices[offset + 9] = transform.getRotation();
-            
-            vertices[offset + 10] = obj.getTextureAtlasType().getId();
+            vertices[offset + 9] = obj.getTextureAtlasType().getId();
             
             offset += VERTEX_SIZE;
         }

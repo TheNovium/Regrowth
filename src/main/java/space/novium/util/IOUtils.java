@@ -83,6 +83,15 @@ public final class IOUtils {
         return Optional.empty();
     }
     
+    public static Optional<JsonObject> loadChunkData(String location){
+        try {
+            InputStream stream = new FileInputStream(ROOT + "/saves/chunks/" + location + ".json");
+        } catch (Exception e){
+        
+        }
+        return Optional.empty();
+    }
+    
     private static InputStream getAsResourceStream(ResourceLocation location) throws FileNotFoundException {
         return getAsResourceStream(location, "data");
     }

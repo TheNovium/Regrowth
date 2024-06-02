@@ -4,7 +4,6 @@ in DATA {
     vec4 color;
     vec3 pos;
     float id;
-    float rotation;
 } fs_in;
 
 uniform sampler2D textures[8];
