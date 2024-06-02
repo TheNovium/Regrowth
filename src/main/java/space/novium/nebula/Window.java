@@ -24,7 +24,7 @@ public class Window {
     private long window;
     private Game game;
     
-    private static final float GOAL_RATIO = 4.0f / 3.0f;
+    private static final int MIN_WIDTH = 600;
     private static final float MAX_RATIO = 2.0f;
     private static final float MIN_RATIO = 1.0f;
     
@@ -98,7 +98,9 @@ public class Window {
             public void invoke(long window, int width, int height) {
                 float currentRatio = (float) width / height;
                 
-                if(currentRatio > MAX_RATIO){
+                if(width < MIN_WIDTH){
+                    glfwSetWindowSize(window, MIN_WIDTH, height);
+                } else if(currentRatio > MAX_RATIO){
                     glfwSetWindowSize(window, (int)(height * MAX_RATIO), height);
                 } else if (currentRatio < MIN_RATIO){
                     glfwSetWindowSize(window, width, (int)(width * MIN_RATIO));
@@ -126,6 +128,8 @@ public class Window {
                 ShaderUtils.dispose();
             }
         });
+        
+        glfwSwapInterval(0);
     
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
