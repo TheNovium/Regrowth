@@ -13,7 +13,8 @@ public class Level {
     private Player player;
     private List<Tile> tiles;
     
-    private final Random random = new Random();
+    private final Random levelRandom = new Random();
+    private final Random dataRandom = new Random();
     
     private final List<Consumer<LevelUpdateListener<?>>> levelListeners;
     private final Stack<LevelUpdateListener<?>> updates;
@@ -45,9 +46,9 @@ public class Level {
     }
     
     private void generateLevel(){
-        Chunk.loadRegion(0, 0, this);
-        Chunk.loadRegion(-1, 0, this);
-        Chunk.loadRegion(-1, -1, this);
-        Chunk.loadRegion(0, -1, this);
+        Chunk.loadRegion(0, 0, this, levelRandom);
+        Chunk.loadRegion(-1, 0, this, levelRandom);
+        Chunk.loadRegion(-1, -1, this, levelRandom);
+        Chunk.loadRegion(0, -1, this, levelRandom);
     }
 }
