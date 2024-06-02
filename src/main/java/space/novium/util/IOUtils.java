@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.Optional;
 
 public final class IOUtils {
-    private static final String ROOT = System.getProperty("user.dir") + "/resources/";
+    private static final String ROOT = System.getProperty("user.dir");
     
     private IOUtils(){
         System.out.println("Root folder located at " + ROOT);
@@ -86,8 +86,9 @@ public final class IOUtils {
     public static Optional<JsonObject> loadChunkData(String location){
         try {
             InputStream stream = new FileInputStream(ROOT + "/saves/chunks/" + location + ".json");
-        } catch (Exception e){
-        
+            return Optional.of(new Gson().fromJson(new JsonReader(new InputStreamReader(stream)), JsonObject.class));
+        } catch (IOException e){
+            System.out.println("Creating a new chunk at " + location);
         }
         return Optional.empty();
     }
@@ -101,6 +102,6 @@ public final class IOUtils {
     }
     
     private static InputStream getAsResourceStream(ResourceLocation location, String subfolder, String filetype) throws FileNotFoundException {
-        return new FileInputStream(ROOT + location.getNamespace() + "/" + subfolder + "/" + location.getPath() + filetype);
+        return new FileInputStream(ROOT + "/resources/" + location.getNamespace() + "/" + subfolder + "/" + location.getPath() + filetype);
     }
 }
