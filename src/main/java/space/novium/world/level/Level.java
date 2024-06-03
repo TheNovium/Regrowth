@@ -46,9 +46,5 @@ public class Level {
     }
     
     private void generateLevel(){
-        Chunk.loadRegion(0, 0, this, levelRandom);
-        Chunk.loadRegion(-1, 0, this, levelRandom);
-        Chunk.loadRegion(-1, -1, this, levelRandom);
-        Chunk.loadRegion(0, -1, this, levelRandom);
     }
 }

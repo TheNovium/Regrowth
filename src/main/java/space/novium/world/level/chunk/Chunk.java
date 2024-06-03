@@ -50,11 +50,11 @@ public class Chunk {
             }
             if(obj.has("tiles")){
                 JsonArray tiles =  obj.getAsJsonArray("tiles");
-                for(int z = 0; z < tiles.size(); z++){
+                for(int z = 0; (z < tiles.size() && z < CHUNK_DEPTH); z++){
                     JsonArray layer = tiles.get(z).getAsJsonArray();
-                    for(int l = 0; l < layer.size(); l++){
+                    for(int l = 0; (l < layer.size() && l < CHUNK_HEIGHT); l++){
                         String row = layer.get(l).getAsString();
-                        for(int c = 0; c < row.length(); c++){
+                        for(int c = 0; (c < row.length() && c < CHUNK_WIDTH); c++){
                             ResourceLocation tileLoc = tileLocs.getOrDefault(row.charAt(c), DEFAULT_TILE);
                             Tile t = Registries.TILE_REGISTRY.getValue(tileLoc);
                             if(t == null){
