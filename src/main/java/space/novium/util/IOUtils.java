@@ -3,6 +3,7 @@ package space.novium.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import space.novium.core.resources.ResourceLocation;
 
 import javax.imageio.ImageIO;
@@ -81,6 +82,18 @@ public final class IOUtils {
             System.err.println("Unable to load JSON object from " + loc);
         }
         return Optional.empty();
+    }
+    
+    public static void saveChunkData(String fileName, JsonObject obj){
+        try{
+            FileWriter writer = new FileWriter(ROOT + "/saves/chunks/" + fileName + ".json");
+            writer.write(obj.toString());
+            writer.flush();
+            writer.close();
+        } catch (Exception e){
+            System.err.println("Failed to save chunk data!");
+            e.printStackTrace();
+        }
     }
     
     public static Optional<JsonObject> loadChunkData(String location){

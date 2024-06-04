@@ -1,11 +1,14 @@
 package space.novium.world.level.chunk;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import space.novium.core.resources.ResourceLocation;
 import space.novium.core.resources.registry.Registries;
 import space.novium.core.resources.registry.registration.GameTiles;
 import space.novium.util.IOUtils;
+import space.novium.util.StringUtils;
 import space.novium.util.math.vector.Vector2i;
 import space.novium.world.level.Level;
 import space.novium.world.tile.Tile;
@@ -22,7 +25,9 @@ public class Chunk {
     public static final int CHUNK_DEPTH = 8;
     /**
      * Chunk indices can be represented as an in by using
-     * CHUNK_WIDTH << 7 | CHUNK_HEIGHT << 3 | CHUNK_DEPTH
+     * CHUNK_DEPTH: i & 0b111
+     * CHUNK_HEIGHT: (i << 3) & 0b1111
+     * CHUNK_WIDTH: i << 7
      * **/
     
     private Vector2i chunkPos;
@@ -32,6 +37,14 @@ public class Chunk {
     private Chunk(int x, int y){
         tiles = new Tile[CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPTH];
         chunkPos = new Vector2i(x, y);
+    }
+    
+    public int getXOffset(){
+        return chunkPos.x * CHUNK_WIDTH;
+    }
+    
+    public int getYOffset(){
+        return chunkPos.y * CHUNK_HEIGHT;
     }
     
     public static Chunk loadRegion(int x, int y, Level level, Random random){
@@ -55,6 +68,7 @@ public class Chunk {
                     for(int l = 0; (l < layer.size() && l < CHUNK_HEIGHT); l++){
                         String row = layer.get(l).getAsString();
                         for(int c = 0; (c < row.length() && c < CHUNK_WIDTH); c++){
+                            if(row.charAt(c) == ' ') continue;
                             ResourceLocation tileLoc = tileLocs.getOrDefault(row.charAt(c), DEFAULT_TILE);
                             Tile t = Registries.TILE_REGISTRY.getValue(tileLoc);
                             if(t == null){
@@ -62,15 +76,14 @@ public class Chunk {
                             }
                             t = t.clone();
                             t.setRegistryName(tileLoc);
-                            t.setPos(c, l, z);
+                            t.setPos(c + loading.getXOffset(), l + loading.getYOffset(), z);
                             level.addTile(t);
                         }
                     }
                 }
             }
-            System.out.println(tileLocs);
         }, () -> loading.generateNewChunkData(level, random));
-        return new Chunk(x, y);
+        return loading;
     }
     
     private void generateNewChunkData(Level level, Random random){
@@ -80,8 +93,42 @@ public class Chunk {
             tiles[i << 3] = t;
             level.addTile(t);
         }
+        saveData();
     }
     
     
-    public void saveData(){}
+    public void saveData(){
+        StringUtils.CharCounter charCounter = new StringUtils.CharCounter();
+        Map<ResourceLocation, Character> charMap = new HashMap<>();
+        JsonObject obj = new JsonObject();
+        JsonObject define = new JsonObject();
+        JsonObject tilesDefine = new JsonObject();
+        JsonArray tileData = new JsonArray(CHUNK_DEPTH);
+        for(int i = 0; i < CHUNK_DEPTH; i++){
+            JsonArray tempArr = new JsonArray(CHUNK_HEIGHT);
+            for(int j = 0; j < CHUNK_HEIGHT; j++){
+                tempArr.add("                        ");
+            }
+            tileData.add(tempArr);
+        }
+        for(int i = 0; i < tiles.length; i++){
+            if(tiles[i] != null){
+                Tile t = tiles[i];
+                charMap.computeIfAbsent(t.getRegistryName(), (s) -> {
+                    char nextChar = charCounter.getNextChar();
+                    tilesDefine.add(String.valueOf(nextChar), new JsonPrimitive(t.getRegistryName().toString()));
+                    return nextChar;
+                });
+                char c = charMap.get(t.getRegistryName());
+                String s = tileData.get(i & 0b111)
+                        .getAsJsonArray().get((i >> 3) & 0b1111).getAsString();
+                s = s.substring(0, (i >> 7)) + c + s.substring((i >> 7) + 1);
+                tileData.get(i & 0b111).getAsJsonArray().set((i >> 3) & 0b1111, new JsonPrimitive(s));
+            }
+        }
+        define.add("tile", tilesDefine);
+        obj.add("define", define);
+        obj.add("tiles", tileData);
+        IOUtils.saveChunkData(chunkPos.x + "x" + chunkPos.y, obj);
+    }
 }
