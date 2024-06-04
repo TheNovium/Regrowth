@@ -6,15 +6,29 @@ import space.novium.core.event.register.IEventRegister;
 import space.novium.core.resources.registry.RegistryObject;
 import space.novium.world.tile.Tile;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Supplier;
+
 import static space.novium.core.resources.registry.Registries.TILE_REGISTRY;
 
 public class GameTiles {
-    public static final RegistryObject<Tile> GRASS = TILE_REGISTRY.register("grass", Tile::new);
-    public static final RegistryObject<Tile> SAND = TILE_REGISTRY.register("sand", Tile::new);
+    private static List<RegistryObject<Tile>> tiles = new LinkedList<>();
+    
+    public static final RegistryObject<Tile> GRASS = register("grass", Tile::new);
+    public static final RegistryObject<Tile> SAND = register("sand", Tile::new);
+    public static final RegistryObject<Tile> RED_BRICK = register("red_brick", Tile::new);
     
     @EventListener(event = EventType.TILE_REGISTRATION)
     public static void init(IEventRegister<Tile> tileRegister){
-        tileRegister.register(GRASS);
-        tileRegister.register(SAND);
+        for(RegistryObject<Tile> tile : tiles){
+            tileRegister.register(tile);
+        }
+    }
+    
+    private static RegistryObject<Tile> register(String name, Supplier<Tile> tile){
+        RegistryObject<Tile> obj = TILE_REGISTRY.register(name, tile);
+        tiles.add(obj);
+        return obj;
     }
 }

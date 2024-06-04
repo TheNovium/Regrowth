@@ -1,5 +1,6 @@
 package space.novium.nebula.graphics.texture.atlas;
 
+import com.google.gson.JsonObject;
 import space.novium.core.resources.ResourceLocation;
 import space.novium.nebula.graphics.render.component.RenderObject;
 import space.novium.util.math.vector.Vector4f;
@@ -48,6 +49,11 @@ public class TextureAtlasHandler {
         
         public Builder loadTexture(ResourceLocation loc, TextureAtlasType type, BufferedImage img){
             builders.computeIfAbsent(type, TextureAtlas.Builder::new).addImage(loc, img);
+            return this;
+        }
+        
+        public Builder loadTexture(ResourceLocation loc, TextureAtlasType type, BufferedImage img, JsonObject data){
+            builders.computeIfAbsent(type, TextureAtlas.Builder::new).addImageWithData(loc, img, data);
             return this;
         }
         

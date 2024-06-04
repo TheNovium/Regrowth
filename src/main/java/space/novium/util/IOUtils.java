@@ -3,6 +3,7 @@ package space.novium.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import space.novium.core.resources.ResourceLocation;
 
 import javax.imageio.ImageIO;
@@ -12,7 +13,7 @@ import java.io.*;
 import java.util.Optional;
 
 public final class IOUtils {
-    private static final String ROOT = System.getProperty("user.dir") + "/resources/";
+    private static final String ROOT = System.getProperty("user.dir");
     
     private IOUtils(){
         System.out.println("Root folder located at " + ROOT);
@@ -83,6 +84,28 @@ public final class IOUtils {
         return Optional.empty();
     }
     
+    public static void saveChunkData(String fileName, JsonObject obj){
+        try{
+            FileWriter writer = new FileWriter(ROOT + "/saves/chunks/" + fileName + ".json");
+            writer.write(obj.toString());
+            writer.flush();
+            writer.close();
+        } catch (Exception e){
+            System.err.println("Failed to save chunk data!");
+            e.printStackTrace();
+        }
+    }
+    
+    public static Optional<JsonObject> loadChunkData(String location){
+        try {
+            InputStream stream = new FileInputStream(ROOT + "/saves/chunks/" + location + ".json");
+            return Optional.of(new Gson().fromJson(new JsonReader(new InputStreamReader(stream)), JsonObject.class));
+        } catch (IOException e){
+            System.out.println("Creating a new chunk at " + location);
+        }
+        return Optional.empty();
+    }
+    
     private static InputStream getAsResourceStream(ResourceLocation location) throws FileNotFoundException {
         return getAsResourceStream(location, "data");
     }
@@ -92,6 +115,6 @@ public final class IOUtils {
     }
     
     private static InputStream getAsResourceStream(ResourceLocation location, String subfolder, String filetype) throws FileNotFoundException {
-        return new FileInputStream(ROOT + location.getNamespace() + "/" + subfolder + "/" + location.getPath() + filetype);
+        return new FileInputStream(ROOT + "/resources/" + location.getNamespace() + "/" + subfolder + "/" + location.getPath() + filetype);
     }
 }

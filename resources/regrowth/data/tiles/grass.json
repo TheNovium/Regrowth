@@ -2,5 +2,7 @@
   "textures": {
     "layer0": "tiles/grass"
   },
-  "rotation": true
+  "data": {
+    "rotation": true
+  }
 }
