@@ -76,7 +76,7 @@ public class Chunk {
                             }
                             t = t.clone();
                             t.setRegistryName(tileLoc);
-                            t.setPos(c + loading.getXOffset(), l + loading.getYOffset(), z);
+                            t.setPos(c + loading.getXOffset(), (CHUNK_HEIGHT - l) + loading.getYOffset(), z);
                             level.addTile(t);
                         }
                     }
