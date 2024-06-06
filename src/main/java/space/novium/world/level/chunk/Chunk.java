@@ -26,8 +26,8 @@ public class Chunk {
     /**
      * Chunk indices can be represented as an in by using
      * CHUNK_DEPTH: i & 0b111
-     * CHUNK_HEIGHT: (i << 3) & 0b1111
-     * CHUNK_WIDTH: i << 7
+     * CHUNK_HEIGHT: (i >> 3) & 0b1111
+     * CHUNK_WIDTH: i >> 7
      * **/
     
     private Vector2i chunkPos;
