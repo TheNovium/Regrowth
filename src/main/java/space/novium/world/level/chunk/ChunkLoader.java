@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class ChunkLoader {
     private Map<Vector2i, Chunk> loadedChunks;
-    private Level level;
+    private final Level level;
     
     public ChunkLoader(Level level, Random tileGen){
         loadedChunks = new HashMap<>();
@@ -18,6 +18,12 @@ public class ChunkLoader {
             for(int j = -1; j < 1; j++){
                 loadedChunks.put(new Vector2i(i, j), Chunk.loadRegion(i, j, level, tileGen));
             }
+        }
+    }
+    
+    public void tick(){
+        for(Chunk chunk : loadedChunks.values()){
+            chunk.tick();
         }
     }
 }

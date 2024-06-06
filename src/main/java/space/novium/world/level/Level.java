@@ -1,7 +1,6 @@
 package space.novium.world.level;
 
 import space.novium.world.entity.Player;
-import space.novium.world.level.chunk.Chunk;
 import space.novium.world.level.chunk.ChunkLoader;
 import space.novium.world.level.update.LevelUpdateListener;
 import space.novium.world.level.update.TileUpdate;
@@ -27,9 +26,6 @@ public class Level {
         levelListeners = new LinkedList<>();
         updates = new Stack<>();
         chunkLoader = new ChunkLoader(this, levelRandom);
-        
-        //TODO change this to load from a file eventually, for now just
-        generateLevel();
     }
     
     public void addUpdateListener(Consumer<LevelUpdateListener<?>> listener){
@@ -47,8 +43,6 @@ public class Level {
                 consumer.accept(listener);
             }
         }
-    }
-    
-    private void generateLevel(){
+        chunkLoader.tick();
     }
 }

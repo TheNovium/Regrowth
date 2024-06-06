@@ -96,6 +96,7 @@ public class Chunk {
         saveData();
     }
     
+    public void tick(){}
     
     public void saveData(){
         StringUtils.CharCounter charCounter = new StringUtils.CharCounter();
